@@ -1,6 +1,7 @@
 #include<TinyGPSPlus.h>
 
 TinyGPSPlus gps;
+byte gpsdata;
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
@@ -11,7 +12,8 @@ void setup() {
 
 void loop() {
   while(Serial2.available()){
-    gps.encode(Serial2.read());
+    gpsdata=Serial2.read();
+    gps.encode(gpsdata);
     if (gps.location.isUpdated()){
       Serial.print("LAT= "); 
       Serial.print(gps.location.lat(), 6);
@@ -27,9 +29,9 @@ void loop() {
       Serial.print(gps.course.deg());
       Serial.print(" SAT= "); 
       Serial.println(gps.satellites.value());
+    } else{
+      Serial.write(gpsdata);
     }
-    /*byte gpsdata = Serial2.read();
-    Serial.write(gpsdata);*/
   }
 
 }
